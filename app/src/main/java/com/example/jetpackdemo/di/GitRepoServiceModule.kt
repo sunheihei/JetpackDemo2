@@ -1,5 +1,6 @@
-package com.example.jetpackdemo
+package com.example.jetpackdemo.di
 
+import com.example.jetpackdemo.GithubService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
