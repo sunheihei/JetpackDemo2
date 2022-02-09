@@ -1,7 +1,18 @@
 package com.example.jetpackdemo.bean
 
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.ForeignKey
+import androidx.room.PrimaryKey
+
 class GitRepo : ArrayList<GitRepoItem>()
 
+@Entity(
+    tableName = "repos",
+    foreignKeys = [
+        ForeignKey(entity = Owner::class, parentColumns = ["id"], childColumns = ["node_id"])
+    ]
+)
 data class GitRepoItem(
     val allow_forking: Boolean,
     val archive_url: String,
@@ -40,7 +51,7 @@ data class GitRepoItem(
     val homepage: String,
     val hooks_url: String,
     val html_url: String,
-    val id: Int,
+    @PrimaryKey @ColumnInfo(name = "id") val id: Int,
     val is_template: Boolean,
     val issue_comment_url: String,
     val issue_events_url: String,
@@ -49,17 +60,17 @@ data class GitRepoItem(
     val labels_url: String,
     val language: String,
     val languages_url: String,
-    val license: Any,
+//    val license: Any,
     val merges_url: String,
     val milestones_url: String,
-    val mirror_url: Any,
+//    val mirror_url: Any,
     val name: String,
     val node_id: String,
     val notifications_url: String,
     val open_issues: Int,
     val open_issues_count: Int,
     val owner: Owner,
-    val `private`: Boolean,
+//    val `private`: Boolean,
     val pulls_url: String,
     val pushed_at: String,
     val releases_url: String,
@@ -73,7 +84,7 @@ data class GitRepoItem(
     val svn_url: String,
     val tags_url: String,
     val teams_url: String,
-    val topics: List<Any>,
+//    val topics: List<Any>,
     val trees_url: String,
     val updated_at: String,
     val url: String,
@@ -82,6 +93,7 @@ data class GitRepoItem(
     val watchers_count: Int
 )
 
+@Entity(tableName = "owner")
 data class Owner(
     val avatar_url: String,
     val events_url: String,
@@ -90,7 +102,7 @@ data class Owner(
     val gists_url: String,
     val gravatar_id: String,
     val html_url: String,
-    val id: Int,
+    @PrimaryKey @ColumnInfo(name = "id") val id: Int,
     val login: String,
     val node_id: String,
     val organizations_url: String,
