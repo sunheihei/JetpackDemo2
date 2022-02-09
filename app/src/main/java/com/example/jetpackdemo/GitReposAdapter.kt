@@ -14,7 +14,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.jetpackdemo.bean.GitRepoItem
 import com.example.jetpackdemo.databinding.ItemRepoLayoutBinding
 import dagger.hilt.android.qualifiers.ActivityContext
-import java.io.File
 import javax.inject.Inject
 
 class GitReposAdapter @Inject constructor(@ActivityContext var context: Context) :
