@@ -1,8 +1,6 @@
 package com.example.jetpackdemo
 
-import android.app.Activity
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -22,8 +20,7 @@ import javax.inject.Inject
 class GitReposAdapter @Inject constructor(@ActivityContext var context: Context) :
     ListAdapter<GitRepoItem, GitReposAdapter.GitRepoHolder>(REPO_COMPARATOR) {
 
-
-    var saveListener: ((repo: GitRepoItem) -> Boolean)? = null
+    var saveClick: ((repo: GitRepoItem) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitRepoHolder {
         return GitRepoHolder(
@@ -73,13 +70,16 @@ class GitReposAdapter @Inject constructor(@ActivityContext var context: Context)
 
             }
 
+            binding.imgSave.setOnClickListener {
+                saveClick?.invoke(repo)
+            }
+
         }
 
     }
 
-
-    fun setOnSaveListener(mSaveListener: (repo: GitRepoItem) -> Boolean) {
-        this.saveListener = mSaveListener
+    fun setOnSaveClick(saveClick: (repo: GitRepoItem) -> Unit) {
+        this.saveClick = saveClick
     }
 
 }

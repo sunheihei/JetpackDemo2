@@ -5,6 +5,7 @@ import com.example.jetpackdemo.bean.GitRepoItem
 import com.example.jetpackdemo.db.GitRepoDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
@@ -18,7 +19,6 @@ class GithubRepoRepository @Inject constructor(
 
     suspend fun getGitRepo(user: String): Flow<Result<GitRepo>> {
         return flow<Result<GitRepo>> {
-
             try {
                 val result = service.getGitHubRepo(user)
                 emit(Result.success(result))

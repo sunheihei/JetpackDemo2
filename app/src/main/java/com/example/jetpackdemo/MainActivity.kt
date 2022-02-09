@@ -44,7 +44,6 @@ class MainActivity : AppCompatActivity() {
                 })
             }
 
-
             mLoading.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
                 override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
                     binding.progressCircular.visibility =
@@ -52,11 +51,13 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
-            adapter.setOnSaveListener {
-                return@setOnSaveListener gitReposViewModel.isSaved(it.id).value!!
+            repos.observe(this@MainActivity) { repos ->
+                Log.d(TAG, "repos size: ${repos.size}")
             }
+        }
 
-
+        adapter.setOnSaveClick {
+            gitReposViewModel.saveRepo(it)
         }
 
 

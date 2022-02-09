@@ -6,10 +6,7 @@ import androidx.lifecycle.*
 import com.example.jetpackdemo.bean.GitRepo
 import com.example.jetpackdemo.bean.GitRepoItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -44,7 +41,7 @@ class GithubRepoViewModel @Inject constructor(private val githubRepoRepository: 
                 // 请求完成
                 mLoading.set(false)
             }
-            .collectLatest { result ->
+            .collect { result ->
                 emit(result)
             }
 

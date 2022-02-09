@@ -9,9 +9,9 @@ class GitRepo : ArrayList<GitRepoItem>()
 
 @Entity(
     tableName = "repos",
-    foreignKeys = [
-        ForeignKey(entity = Owner::class, parentColumns = ["id"], childColumns = ["node_id"])
-    ]
+//    foreignKeys = [
+//        ForeignKey(entity = Owner::class, parentColumns = ["id"], childColumns = ["node_id"])
+//    ]
 )
 data class GitRepoItem(
     val allow_forking: Boolean,
@@ -90,7 +90,9 @@ data class GitRepoItem(
     val url: String,
     val visibility: String,
     val watchers: Int,
-    val watchers_count: Int
+    val watchers_count: Int,
+    //记录是否保存
+    val local_save: Boolean
 )
 
 @Entity(tableName = "owner")
