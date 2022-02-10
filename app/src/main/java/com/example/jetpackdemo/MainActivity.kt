@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.Observable
+import com.example.jetpackdemo.bean.GitRepo
 import com.example.jetpackdemo.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -36,7 +37,9 @@ class MainActivity : AppCompatActivity() {
         gitReposViewModel.apply {
             fectchGithubRepos(userName).observe(this@MainActivity) { result ->
 
+                Log.d(TAG, "fectchGithubRepos")
                 result.fold(onSuccess = {
+
                     adapter.submitList(result.getOrThrow())
 
                 }, onFailure = {
@@ -57,7 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         adapter.setOnSaveClick {
-            gitReposViewModel.saveRepo(it)
+//            gitReposViewModel.saveOrDeleteRepo(it)
         }
 
 

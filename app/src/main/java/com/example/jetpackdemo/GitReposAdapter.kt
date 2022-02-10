@@ -69,6 +69,12 @@ class GitReposAdapter @Inject constructor(@ActivityContext var context: Context)
 
             }
 
+            if (repo.local_save) {
+                binding.imgSave.setImageResource(R.drawable.ic_fav)
+            } else {
+                binding.imgSave.setImageResource(R.drawable.ic_un_fav)
+            }
+
             binding.imgSave.setOnClickListener {
                 saveClick?.invoke(repo)
             }

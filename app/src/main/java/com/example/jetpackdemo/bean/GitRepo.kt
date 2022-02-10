@@ -48,7 +48,7 @@ data class GitRepoItem(
     val has_pages: Boolean,
     val has_projects: Boolean,
     val has_wiki: Boolean,
-    val homepage: String,
+//    val homepage: String,
     val hooks_url: String,
     val html_url: String,
     @PrimaryKey @ColumnInfo(name = "id") val id: Int,
@@ -92,7 +92,7 @@ data class GitRepoItem(
     val watchers: Int,
     val watchers_count: Int,
     //记录是否保存
-    val local_save: Boolean
+    var local_save: Boolean
 )
 
 @Entity(tableName = "owner")

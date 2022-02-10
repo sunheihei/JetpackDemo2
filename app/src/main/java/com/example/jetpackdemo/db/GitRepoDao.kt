@@ -17,6 +17,11 @@ interface GitRepoDao {
     @Query("SELECT EXISTS(SELECT 1 FROM repos WHERE id = :repoId LIMIT 1)")
     fun isSaved(repoId: Int): Flow<Boolean>
 
+
+    @Query("SELECT EXISTS(SELECT 1 FROM repos WHERE id = :repoId LIMIT 1)")
+    fun isSavedForBoolean(repoId: Int): Boolean
+
+
     @Insert
     suspend fun insertFavRepo(gitRepo: GitRepoItem): Long
 

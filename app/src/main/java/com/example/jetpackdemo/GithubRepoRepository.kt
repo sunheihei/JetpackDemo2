@@ -1,5 +1,6 @@
 package com.example.jetpackdemo
 
+import android.util.Log
 import com.example.jetpackdemo.bean.GitRepo
 import com.example.jetpackdemo.bean.GitRepoItem
 import com.example.jetpackdemo.db.GitRepoDao
@@ -16,12 +17,12 @@ class GithubRepoRepository @Inject constructor(
     private val service: GithubService,
     private val gitRepoDao: GitRepoDao
 ) {
-
+    private lateinit var result: GitRepo
     suspend fun getGitRepo(user: String): Flow<Result<GitRepo>> {
         return flow<Result<GitRepo>> {
             try {
-                val result = service.getGitHubRepo(user)
-                emit(Result.success(result))
+                result = service.getGitHubRepo(user)
+                emit(Result.success(dealSaveGitRepo(result)))
             } catch (e: Exception) {
                 emit(Result.failure(e))
             }
@@ -29,11 +30,25 @@ class GithubRepoRepository @Inject constructor(
         }.flowOn(Dispatchers.IO)
     }
 
+    //和数据库已保存做对比
+    private fun dealSaveGitRepo(result: GitRepo): GitRepo {
+        val result2 = GitRepo()
+        result.map {
+            it.local_save = gitRepoDao.isSavedForBoolean(it.id)
+            return@map it
+        }.forEach {
+            result2.add(it)
+        }
+        return result2
+    }
+
+
     fun isSaved(repoId: Int) =
         gitRepoDao.isSaved(repoId)
 
     fun getRepos() = gitRepoDao.getRepos()
 
+    fun isSavedForBoolean(repoId: Int) = gitRepoDao.isSavedForBoolean(repoId)
 
     suspend fun insertRepo(gitRepo: GitRepoItem) {
         gitRepoDao.insertFavRepo(gitRepo)
