@@ -95,11 +95,7 @@ class GithubRepoViewModel @Inject constructor(private val githubRepoRepository: 
 
     fun saveOrDeleteRepo(gitRepo: GitRepoItem) {
         viewModelScope.launch {
-            if (githubRepoRepository.isSavedForBoolean(gitRepo.id)) {
-                githubRepoRepository.deleteRepo(gitRepo)
-            } else {
-                githubRepoRepository.insertRepo(gitRepo)
-            }
+            githubRepoRepository.saveOrDeleteRepo(gitRepo)
         }
     }
 

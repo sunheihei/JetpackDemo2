@@ -34,6 +34,32 @@ class MainActivity : AppCompatActivity() {
 
         binding.gitReposRec.adapter = adapter
 
+        fetchGitRepos()
+
+        adapter.setOnSaveClick {
+            gitReposViewModel.saveOrDeleteRepo(it)
+            fetchGitRepos()
+        }
+
+
+//        lifecycleScope.launch {
+//            gitReposViewModel.apply {
+//                fetchGithubRepos3("sunheihei").observe(this@MainActivity) { result ->
+//                    result.fold(onSuccess = {
+//                        Log.d(TAG, "Success")
+//
+//                    }, onFailure = {
+//                        Log.d(TAG, "Fail")
+//
+//                    })
+//                }
+//            }
+//        }
+
+
+    }
+
+    private fun fetchGitRepos() {
         gitReposViewModel.apply {
             fectchGithubRepos(userName).observe(this@MainActivity) { result ->
 
@@ -58,27 +84,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d(TAG, "repos size: ${repos.size}")
             }
         }
-
-        adapter.setOnSaveClick {
-//            gitReposViewModel.saveOrDeleteRepo(it)
-        }
-
-
-//        lifecycleScope.launch {
-//            gitReposViewModel.apply {
-//                fetchGithubRepos3("sunheihei").observe(this@MainActivity) { result ->
-//                    result.fold(onSuccess = {
-//                        Log.d(TAG, "Success")
-//
-//                    }, onFailure = {
-//                        Log.d(TAG, "Fail")
-//
-//                    })
-//                }
-//            }
-//        }
-
-
     }
 }
 

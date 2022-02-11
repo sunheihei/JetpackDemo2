@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -49,6 +50,16 @@ class GithubRepoRepository @Inject constructor(
     fun getRepos() = gitRepoDao.getRepos()
 
     fun isSavedForBoolean(repoId: Int) = gitRepoDao.isSavedForBoolean(repoId)
+
+
+    suspend fun saveOrDeleteRepo(gitRepo: GitRepoItem)  = withContext(Dispatchers.IO){
+        if (isSavedForBoolean(gitRepo.id)) {
+            deleteRepo(gitRepo)
+        } else {
+            insertRepo(gitRepo)
+        }
+    }
+
 
     suspend fun insertRepo(gitRepo: GitRepoItem) {
         gitRepoDao.insertFavRepo(gitRepo)
