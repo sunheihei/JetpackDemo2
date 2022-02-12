@@ -18,12 +18,12 @@ class GithubRepoRepository @Inject constructor(
     private val service: GithubService,
     private val gitRepoDao: GitRepoDao
 ) {
-    private lateinit var result: GitRepo
+    private var result: GitRepo? = null
     suspend fun getGitRepo(user: String): Flow<Result<GitRepo>> {
         return flow<Result<GitRepo>> {
             try {
                 result = service.getGitHubRepo(user)
-                emit(Result.success(dealSaveGitRepo(result)))
+                emit(Result.success(dealSaveGitRepo(result!!)))
             } catch (e: Exception) {
                 emit(Result.failure(e))
             }
@@ -52,7 +52,7 @@ class GithubRepoRepository @Inject constructor(
     fun isSavedForBoolean(repoId: Int) = gitRepoDao.isSavedForBoolean(repoId)
 
 
-    suspend fun saveOrDeleteRepo(gitRepo: GitRepoItem)  = withContext(Dispatchers.IO){
+    suspend fun saveOrDeleteRepo(gitRepo: GitRepoItem) = withContext(Dispatchers.IO) {
         if (isSavedForBoolean(gitRepo.id)) {
             deleteRepo(gitRepo)
         } else {
