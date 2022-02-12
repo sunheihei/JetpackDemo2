@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 class GitRepo : ArrayList<GitRepoItem>()
 
@@ -93,7 +94,7 @@ data class GitRepoItem(
     val watchers_count: Int,
     //记录是否保存
     var local_save: Boolean
-)
+) : Serializable
 
 @Entity(tableName = "owner")
 data class Owner(
@@ -115,4 +116,4 @@ data class Owner(
     val subscriptions_url: String,
     val type: String,
     val url: String
-)
+) : Serializable

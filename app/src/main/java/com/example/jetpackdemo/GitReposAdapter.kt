@@ -20,6 +20,7 @@ class GitReposAdapter @Inject constructor(@ActivityContext var context: Context)
     ListAdapter<GitRepoItem, GitReposAdapter.GitRepoHolder>(REPO_COMPARATOR) {
 
     var saveClick: ((repo: GitRepoItem) -> Unit)? = null
+    var itemClick: ((repo: GitRepoItem) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GitRepoHolder {
         return GitRepoHolder(
@@ -65,7 +66,8 @@ class GitReposAdapter @Inject constructor(@ActivityContext var context: Context)
             ).into(binding.imageAvatar)
 
             binding.root.setOnClickListener {
-                Toast.makeText(binding.root.context, repo.archive_url, Toast.LENGTH_SHORT).show()
+//                Toast.makeText(binding.root.context, repo.archive_url, Toast.LENGTH_SHORT).show()
+                itemClick?.invoke(repo)
 
             }
 
@@ -85,6 +87,10 @@ class GitReposAdapter @Inject constructor(@ActivityContext var context: Context)
 
     fun setOnSaveClick(saveClick: (repo: GitRepoItem) -> Unit) {
         this.saveClick = saveClick
+    }
+
+    fun setOnItemClick(itemClick: (repo: GitRepoItem) -> Unit) {
+        this.itemClick = itemClick
     }
 
 }
