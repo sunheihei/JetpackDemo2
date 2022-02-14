@@ -11,14 +11,13 @@
         android:label="@string/home"
         tools:layout="@layout/fragment_main">
 
-        <!--<action-->
-        <!--android:id="@+id/next_action"-->
-        <!--app:destination="@+id/flow_step_one_dest"-->
-        <!--app:enterAnim="@anim/slide_in_right"-->
-        <!--app:exitAnim="@anim/slide_out_left"-->
-        <!--app:popEnterAnim="@anim/slide_in_left"-->
-        <!--app:popExitAnim="@anim/slide_out_right" />-->
-
+<!--        <action-->
+<!--            android:id="@+id/action_home_dest_to_git_fragment"-->
+<!--            app:destination="@id/git_fragment"-->
+<!--            app:enterAnim="@anim/slide_in_right"-->
+<!--            app:exitAnim="@anim/slide_out_left"-->
+<!--            app:popEnterAnim="@anim/slide_in_left"-->
+<!--            app:popExitAnim="@anim/slide_out_right" />-->
     </fragment>
 
     <fragment
