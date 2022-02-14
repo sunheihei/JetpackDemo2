@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/home_dest"
-        android:name="com.example.jetpackdemo.HomeFragment"
+        android:name="com.example.jetpackdemo.HomeFrag"
         android:label="@string/home"
         tools:layout="@layout/fragment_main">
 

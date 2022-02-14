@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import androidx.databinding.Observable
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navOptions
 import com.example.jetpackdemo.base.BaseVMFragment
@@ -14,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : BaseVMFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
+class HomeFrag : BaseVMFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
 
 
     private val TAG = "MainActivity"
@@ -28,7 +27,7 @@ class HomeFragment : BaseVMFragment<FragmentMainBinding>(FragmentMainBinding::in
 
     companion object {
         @JvmStatic
-        fun newInstance() = HomeFragment()
+        fun newInstance() = HomeFrag()
     }
 
     override fun initView() {
