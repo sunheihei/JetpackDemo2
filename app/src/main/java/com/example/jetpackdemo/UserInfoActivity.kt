@@ -5,11 +5,19 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.fragment.app.viewModels
+import androidx.compose.ui.unit.dp
+import coil.compose.rememberImagePainter
+import com.example.jetpackdemo.bean.GitUserinfo
 import com.example.jetpackdemo.di.GithubUserInfoViewModel
 import com.example.jetpackdemo.ui.theme.JetpackDemoTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -19,7 +27,6 @@ class UserInfoActivity : ComponentActivity() {
 
     private val TAG = "UserInfoActivity"
 
-    val gitReposViewModel: GithubUserInfoViewModel by viewModels()
 
     private val userName = "sunheihei"
 
@@ -29,51 +36,59 @@ class UserInfoActivity : ComponentActivity() {
             JetpackDemoTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                    val gitUserinfoViewModel: GithubUserInfoViewModel by viewModels()
+
+                    var userinfo = gitUserinfoViewModel.fectchGithubUserInfo(userName)
+                        .observeAsState().value
+                    userinfo?.let {
+                        GitHubUserInfo(userinfo.getOrThrow())
+                    }
+
                 }
             }
         }
 
-        gitReposViewModel.apply {
-            fectchGithubUserInfo(userName).observe(this@UserInfoActivity) { result ->
-                Log.d(TAG, "fectchGithubUserInfo")
-                result.fold(onSuccess = {
-                    Log.d(TAG, "${result.getOrNull()}")
-                }, onFailure = {
-
-                })
-            }
-        }
-
-
     }
-
-
 }
 
 @Composable
-fun GitHubUserInfo() {
+fun GitHubUserInfo(userinfo: GitUserinfo) {
+
     Scaffold(
         topBar = {
-            TopAppBar() {
-
+            TopAppBar(
+                title = { Text("GitUserInfo") },
+                backgroundColor = MaterialTheme.colors.primary
+            )
+        },
+        content = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Surface(
+                    modifier = Modifier.size(120.dp),
+                    shape = CircleShape,
+                    color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)
+                ) {
+                    Image(
+                        painter = rememberImagePainter(data = userinfo.avatar_url),
+                        contentDescription = "avatar"
+                    )
+                }
+                Text(text = userinfo.name)
             }
         }
-    ) {
-
-    }
+    )
 }
 
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     JetpackDemoTheme {
-        Greeting("Android")
+//        GitHubUserInfo()
     }
 }
