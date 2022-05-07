@@ -36,14 +36,12 @@ class HomeFrag : BaseVMFragment<FragmentMainBinding>(FragmentMainBinding::inflat
         gitReposViewModel.apply {
             fectchGithubRepos(userName).observe(requireActivity()) { result ->
 
-                Log.d(TAG, "fectchGithubRepos")
-                result.fold(onSuccess = {
 
-                    adapter.submitList(result.getOrThrow())
+                Log.d(TAG, "size ：${result.size}")
 
-                }, onFailure = {
-
-                })
+                if (result.isNotEmpty()) {
+                    adapter.submitList(result)
+                }
             }
 
             mLoading.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {

@@ -1,46 +1,36 @@
 package com.example.jetpackdemo
 
-import android.util.Log
 import com.example.jetpackdemo.bean.GitRepo
 import com.example.jetpackdemo.bean.GitRepoItem
 import com.example.jetpackdemo.db.GitRepoDao
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * 再抽出一层
+ * 新增GithubRepoDataSource作为原始数据源
+ * 如果需要中途修改数据则在Repository中运用map｛｝等方法操作
+ *
+ * retrofit方法中加suspend配合协程后面方法就不需要写suspend
+ */
+
 @Singleton
 class GithubRepoRepository @Inject constructor(
-    private val service: GithubService,
+    private val githubRepoDataSource: GithubRepoDataSource,
     private val gitRepoDao: GitRepoDao
 ) {
-    private var result: GitRepo? = null
-    suspend fun getGitRepo(user: String): Flow<Result<GitRepo>> {
-        return flow<Result<GitRepo>> {
-            try {
-                result = service.getGitHubRepo(user)
-                emit(Result.success(dealSaveGitRepo(result!!)))
-            } catch (e: Exception) {
-                emit(Result.failure(e))
-            }
 
-        }.flowOn(Dispatchers.IO)
-    }
-
-    //和数据库已保存做对比
-    private fun dealSaveGitRepo(result: GitRepo): GitRepo {
-        val result2 = GitRepo()
-        result.map {
-            it.local_save = gitRepoDao.isSavedForBoolean(it.id)
-            return@map it
-        }.forEach {
-            result2.add(it)
-        }
-        return result2
+    fun getGitRepo(user: String): Flow<GitRepo> {
+        return githubRepoDataSource.getGitRepo(user)
+            .map { gitRepo ->
+                gitRepo.forEach {
+                    it.local_save = gitRepoDao.isSavedForBoolean(it.id)
+                }
+                gitRepo
+            }.flowOn(Dispatchers.IO)
     }
 
 
@@ -71,3 +61,6 @@ class GithubRepoRepository @Inject constructor(
     }
 
 }
+
+
+

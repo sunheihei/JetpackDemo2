@@ -31,7 +31,7 @@ class MainActivity : BaseVMActivity<ActivityMainBinding>() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.gituser -> {
-                startActivity(Intent(this@MainActivity, UserInfoActivity::class.java))
+
             }
         }
 
